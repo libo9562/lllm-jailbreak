@@ -1,5 +1,6 @@
 from common import conv_template, extract_json, get_api_key
-from config import FASTCHAT_TEMPLATE_NAMES, Model
+from config import ATTACK_TEMP, ATTACK_TOP_P, FASTCHAT_TEMPLATE_NAMES, TARGET_TEMP, TARGET_TOP_P, Model
+from jailbreakbench import LLMLiteLLM, LLMvLLM
 from language_models import APILiteLLM
 
 
@@ -27,12 +28,8 @@ def load_attack_and_target_models(args):
 def load_indiv_model(model_name, local=False, use_jailbreakbench=True):
     if use_jailbreakbench:
         if local:
-            from jailbreakbench import LLMvLLM
-
             lm = LLMvLLM(model_name=model_name)
         else:
-            from jailbreakbench import LLMLiteLLM
-
             api_key = get_api_key(Model(model_name))
             lm = LLMLiteLLM(model_name=model_name, api_key=api_key)
     else:
@@ -56,8 +53,6 @@ class AttackLM:
         self.model_name = Model(model_name)
         self.max_n_tokens = max_n_tokens
         self.max_n_attack_attempts = max_n_attack_attempts
-
-        from config import ATTACK_TEMP, ATTACK_TOP_P
 
         self.temperature = ATTACK_TEMP
         self.top_p = ATTACK_TOP_P
@@ -181,8 +176,6 @@ class TargetLM:
         self.phase = phase
         self.use_jailbreakbench = use_jailbreakbench
         self.evaluate_locally = evaluate_locally
-
-        from config import TARGET_TEMP, TARGET_TOP_P
 
         self.temperature = TARGET_TEMP
         self.top_p = TARGET_TOP_P
