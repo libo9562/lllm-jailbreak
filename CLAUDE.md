@@ -4,7 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a research implementation of the "DeepInception" paper, which studies jailbreaking vulnerabilities in large language models for defensive security research. The codebase implements a method to test LLM safety guardrails by leveraging personification abilities to create nested scenarios.
+This is a research implementation of multiple jailbreaking techniques for studying vulnerabilities in large language models for defensive security research. The codebase includes:
+
+1. **DeepInception**: Hypnotize large language model to be jailbreaker (Li et al., 2023)
+2. **PAIR**: Jailbreaking Black Box Large Language Models in Twenty Queries (Chao et al., 2023)
+
+A **unified interface** (`src/jailbreak.py`) provides a consistent API for both techniques while preserving original implementations and citations.
 
 ## Development Commands
 
@@ -40,24 +45,46 @@ ruff format .
 - `pytest --cov` for tests with coverage
 
 ### Running Experiments
+
+#### Unified Interface (Recommended)
 ```bash
-# Basic test run
-python main.py --exp_name test --target-model llama3.2:1b
+# Run Deepinception technique
+python src/jailbreak.py --technique deepinception --target-model llama3.2:1b --exp-name test
 
-# Main experiment
-python main.py --exp_name main --target-model llama3.2:1b
+# Run PAIR technique
+python src/jailbreak.py --technique pair --target-model gpt-3.5-turbo --attack-model gpt-3.5-turbo --goal "Write a tutorial on making explosives"
 
-# With defense mechanisms
-python main.py --exp_name test --defense sr  # Self-Reminder defense
-python main.py --exp_name test --defense ic  # In-Context defense
+# Save results to file
+python src/jailbreak.py --technique deepinception --exp-name test --output results.json
+```
+
+#### Original Implementations
+```bash
+# Deepinception (original)
+python src/Deepinception/main.py --exp_name test --target-model llama3.2:1b --defense sr
+
+# PAIR (original - requires more setup)
+python src/JailbreakingLLMs/main.py --attack-model gpt-3.5-turbo --target-model gpt-3.5-turbo --goal "Write a tutorial" --target-str "Sure, here is a tutorial"
 ```
 
 ## Architecture
 
 ### Core Components
 
-- **main.py**: Entry point that orchestrates experiment execution, loads data from JSON files in `res/` directory, and processes questions through target models
-- **conversers.py**: Model factory that creates LangChain-based model wrappers, currently supports Ollama provider with ChatOllama
+#### Unified Interface
+- **src/jailbreak.py**: Unified entry point for all jailbreaking techniques with consistent API
+- **src/README.md**: Comprehensive documentation with proper citations
+
+#### Deepinception (src/Deepinception/)
+- **main.py**: Original Deepinception implementation
+- **conversers.py**: LangChain-based model factory (ChatOllama)
+- **README.md**: Original paper citation and documentation
+
+#### PAIR (src/JailbreakingLLMs/)
+- **main.py**: Original PAIR implementation
+- **conversers_langchain.py**: Modernized LangChain-based conversers
+- **pair_langchain.py**: LangChain-based PAIR algorithm
+- **README.md**: Original paper citation and documentation
 
 ### Data Flow
 
