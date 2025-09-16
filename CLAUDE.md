@@ -19,6 +19,10 @@ pip install -e .[dev]
 
 ### Code Quality
 ```bash
+# Run all quality checks, linting, formatting, and tests
+./scripts/update.sh
+
+# Individual commands (use update.sh instead):
 # Format imports
 isort .
 
@@ -26,6 +30,14 @@ isort .
 ruff check .
 ruff format .
 ```
+
+### Pre-commit Checks
+**IMPORTANT**: Always run `./scripts/update.sh` before committing. This script runs:
+- `no_implicit_optional` for type checking
+- `autoimport` for import optimization
+- `ruff check --fix` for linting with auto-fixes
+- `ruff format` for code formatting
+- `pytest --cov` for tests with coverage
 
 ### Running Experiments
 ```bash

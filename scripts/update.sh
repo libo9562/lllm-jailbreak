@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Use provided arguments, otherwise default to 'src' and 'tests'
+# Use provided arguments, otherwise default to 'src'
 if [ "$#" -eq 0 ]; then
-    DIRS=("src" "tests")
+    DIRS=("src")
 else
     DIRS=("$@")
 fi
@@ -14,5 +14,7 @@ uv run ruff check --fix "${DIRS[@]}"
 uv run ruff format "${DIRS[@]}"
 
 set -e
-# Run unit tests and check coverage
-uv run pytest --cov-config=./pyproject.toml --cov=src tests
+# Run unit tests if tests directory exists
+if [ -d "tests" ]; then
+    uv run pytest --cov-config=./pyproject.toml --cov=src tests
+fi
