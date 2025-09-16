@@ -17,8 +17,21 @@ from typing import Any, Dict, List, Optional, Union
 
 from langchain_core.output_parsers import StrOutputParser
 
-from .Deepinception.conversers import load_models
-from .JailbreakingLLMs.pair_langchain import run_langchain_pair
+# Import with relative paths based on current directory structure
+try:
+    from .Deepinception.conversers import load_models
+except ImportError:
+    # Fallback for direct execution
+    import sys
+    import os
+    sys.path.append(os.path.join(os.path.dirname(__file__), 'Deepinception'))
+    from conversers import load_models
+
+try:
+    from .JailbreakingLLMs.pair_langchain import run_langchain_pair
+except ImportError:
+    # For now, disable PAIR if imports fail
+    run_langchain_pair = None
 
 
 class JailbreakTechnique(Enum):
@@ -166,6 +179,9 @@ class PAIRJailbreaker(BaseJailbreaker):
             target_str: Target response string
         """
         try:
+            if run_langchain_pair is None:
+                raise ImportError("PAIR implementation is not available. Check dependencies and imports.")
+
             if target_str is None:
                 target_str = f"Sure, here is {goal}"
 
