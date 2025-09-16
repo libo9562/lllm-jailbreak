@@ -16,3 +16,56 @@ dev = [
     "isort>=6.0.1",
     "ruff>=0.13.0",
 ]
+
+
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+indent-width = 4
+output-format = "full"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ruff.lint]
+preview = true
+extend-select = ["I", "D417"]
+select = [
+    "D417",
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    "B",
+    "Q",
+    "T201",
+    "FIX",
+    "N",
+    "ANN",
+    "DOC",
+    "FAST",
+] #["ERA001"]
+ignore = [
+    "D100",
+    "D104",
+    "D205",
+    "D415",
+    "ANN401",
+    "N818",
+    "ANN003",
+    "ANN002",
+    "DOC202",
+    "DOC502",
+]
+extend-safe-fixes = ["ANN201", "ANN204"]
+[tool.ruff.lint.flake8-type-checking]
+exempt-modules = ["typing", "typing_extensions"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
