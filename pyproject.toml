@@ -13,8 +13,13 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "autoimport>=1.6.1",
     "isort>=6.0.1",
+    "no-implicit-optional>=1.4",
     "ruff>=0.13.0",
+]
+test = [
+    "pytest>=8.4.2",
 ]
 
 
