@@ -36,6 +36,7 @@ from .config import (
 )
 
 
+
 class LangChainModelFactory:
     """Factory for creating LangChain-compatible models."""
 
@@ -99,8 +100,8 @@ class LangChainAttackLM:
         model_name: str,
         max_n_tokens: int = 500,
         max_n_attack_attempts: int = 5,
-        temperature: float = None,
-        top_p: float = None,
+        temperature: Optional[float] = None,
+        top_p: Optional[float] = None,
         **kwargs
     ):
         self.model_name = model_name
@@ -246,8 +247,8 @@ class LangChainTargetLM:
         self,
         model_name: str,
         max_n_tokens: int = 150,
-        temperature: float = None,
-        top_p: float = None,
+        temperature: Optional[float] = None,
+        top_p: Optional[float] = None,
         **kwargs
     ):
         self.model_name = model_name
