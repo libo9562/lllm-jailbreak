@@ -4,7 +4,7 @@ import os
 
 from langchain_core.output_parsers import StrOutputParser
 
-from conversers import load_models
+from src.conversers import load_models
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
